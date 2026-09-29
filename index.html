@@ -264,7 +264,6 @@
 
   .share-row { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   .btn.wa { background: #25d366; color: #fff; }
-  .btn.email { background: var(--cyan); color: #06222a; }
 
   footer { text-align: center; padding: 1.5rem 1rem 3rem; font-size: 1.3rem; }
   footer .px { font-size: .62rem; margin: .5rem 0; }
@@ -408,7 +407,6 @@
           <div class="ticket" id="ticket" hidden></div>
           <div class="share-row" id="shareRow" hidden>
             <a class="btn wa" id="shareWa" href="#" target="_blank" rel="noopener">💬 SEND VIA WHATSAPP</a>
-            <a class="btn email" id="shareEmail" href="#" target="_blank" rel="noopener">✉ SEND VIA EMAIL</a>
           </div>
         </div>
 
@@ -792,9 +790,6 @@
         '\n\nSigned with all my love,\n' + CONFIG.from + ' ♥';
 
       $('shareWa').href = 'https://wa.me/8801688913506?text=' + encodeURIComponent(msg);
-      $('shareEmail').href = 'mailto:mherub@iamahsan.org?subject=' +
-        encodeURIComponent('🎂 Birthday Coupon for ' + CONFIG.name) +
-        '&body=' + encodeURIComponent(msg);
       $('shareRow').hidden = false;
 
       jingle(); burstAt(t, LOVE, 20);
