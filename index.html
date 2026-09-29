@@ -262,6 +262,10 @@
   .ticket ul { margin: 0 0 .8rem; padding-left: 1.3rem; }
   .ticket .sign { font-size: 1.3rem; text-align: right; }
 
+  .share-row { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
+  .btn.wa { background: #25d366; color: #fff; }
+  .btn.email { background: var(--cyan); color: #06222a; }
+
   footer { text-align: center; padding: 1.5rem 1rem 3rem; font-size: 1.3rem; }
   footer .px { font-size: .62rem; margin: .5rem 0; }
   .visitor { display: inline-block; background: #0c0021; color: #ffe45e; padding: .3rem .6rem; border: 3px solid var(--border); letter-spacing: .15em; }
@@ -402,6 +406,10 @@
           <button class="btn" id="redeemBtn">🎟 REDEEM MY SURPRISES</button>
           <div class="pass-msg" id="redeemMsg" role="status"></div>
           <div class="ticket" id="ticket" hidden></div>
+          <div class="share-row" id="shareRow" hidden>
+            <a class="btn wa" id="shareWa" href="#" target="_blank" rel="noopener">💬 SEND VIA WHATSAPP</a>
+            <a class="btn email" id="shareEmail" href="#" target="_blank" rel="noopener">✉ SEND VIA EMAIL</a>
+          </div>
         </div>
 
       </div>
@@ -768,7 +776,7 @@
     $('redeemBtn').addEventListener('click', function () {
       var ids = Object.keys(picked);
       var t = $('ticket'), m = $('redeemMsg');
-      if (!ids.length) { m.textContent = 'Pick at least one surprise, my love.'; t.hidden = true; return; }
+      if (!ids.length) { m.textContent = 'Pick at least one surprise, my love.'; t.hidden = true; $('shareRow').hidden = true; return; }
       m.textContent = '';
       var items = ids.map(function (i) { return '<li>' + CONFIG.options[i][0] + ' ' + CONFIG.options[i][1] + '</li>'; }).join('');
       t.innerHTML = '<h4>★ BIRTHDAY COUPON ★</h4>' +
@@ -776,6 +784,19 @@
         '<p style="margin:0 0 .6rem">Valid for: <b>' + CONFIG.name + '</b><br>Expires: <b>NEVER</b><br>Limit: <b>NONE</b></p>' +
         '<div class="sign">Signed with all my love,<br>' + CONFIG.from + ' ♥</div>';
       t.hidden = false;
+
+      /* build share message */
+      var lines = ids.map(function (i) { return CONFIG.options[i][0] + ' ' + CONFIG.options[i][1]; });
+      var msg = '★ BIRTHDAY COUPON ★\n\nThis ticket is worth:\n' + lines.map(function (l) { return '• ' + l; }).join('\n') +
+        '\n\nValid for: ' + CONFIG.name + '\nExpires: NEVER  |  Limit: NONE' +
+        '\n\nSigned with all my love,\n' + CONFIG.from + ' ♥';
+
+      $('shareWa').href = 'https://wa.me/8801688913506?text=' + encodeURIComponent(msg);
+      $('shareEmail').href = 'mailto:mherub@iamahsan.org?subject=' +
+        encodeURIComponent('🎂 Birthday Coupon for ' + CONFIG.name) +
+        '&body=' + encodeURIComponent(msg);
+      $('shareRow').hidden = false;
+
       jingle(); burstAt(t, LOVE, 20);
       t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
     });
